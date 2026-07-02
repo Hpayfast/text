@@ -75,13 +75,17 @@ p{
 <div class="box">
 <h1>Chat App</h1>
 
-<input type="text" placeholder="Username">
+<input id="username" type="text" placeholder="Username">
 
-<input type="password" placeholder="Password">
+<input id="password" type="password" placeholder="Password">
 
-<button>Login</button>
+<button onclick="signup()">Sign Up</button>
 
-<p>Signup Coming Soon</p>
+<br><br>
+
+<button onclick="login()">Login</button>
+
+<p id="status"></p>
 
 </div>
 <script src="app.js"></script>
