@@ -56,8 +56,10 @@ async function login() {
 
   if (data.length === 0) {
     status.innerText = "Wrong username or password";
-  } else {
+} else {
     status.innerText = "Login Successful";
-  }
 
+    localStorage.setItem("username", username);
+
+    window.location.href = "chat.html";
 }
