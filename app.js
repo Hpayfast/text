@@ -1,4 +1,4 @@
-alert("app.js loaded");
+alert("app.js loaded"); 
 async function signup() {
 
   const username = document.getElementById("username").value.trim();
