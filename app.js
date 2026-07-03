@@ -7,7 +7,7 @@ async function signup() {
   if (!username || !password) {
     status.innerText = "Enter username and password";
     return;
-  }
+  } 
 
   const { data: user } = await supabase
     .from("users")
