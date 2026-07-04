@@ -542,14 +542,18 @@
       p.style.opacity = Math.random() * 0.35;
       particles.appendChild(p);
     }
-  </script>
-<script>
+  <script>
 fetch("config.json")
   .then(response => response.json())
   .then(data => {
     document.getElementById("productName").textContent = data.product;
     document.getElementById("amount").textContent = data.amount;
     document.getElementById("upi").textContent = data.upi;
+
+    // QR Code
+    document.getElementById("qrImage").src =
+      "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" +
+      encodeURIComponent(data.upi);
   })
   .catch(error => console.error("Config load failed:", error));
 </script>
