@@ -404,28 +404,35 @@
       </div>
 
       <div class="info-box">
-        <div class="info-label">Product Name</div>
-        <span id="productName">Loading...</span>
+  <div class="info-label">Product Name</div>
+  <div class="info-value">
+    <span id="productName">Loading...</span>
+  </div>
+</div>
 
-      <div class="info-box">
-        <div class="info-label">Amount</div>
-        <span id="amount">Loading...</span>
+<div class="info-box">
+  <div class="info-label">Amount</div>
+  <div class="info-value">
+    <span id="amount">Loading...</span>
+  </div>
+</div>
 
-      <div class="form-group">
-        <label for="upiText">UPI ID</label>
-        <div class="upi-row">
-          <span id="upi">Loading...</span>
-          <button type="button" class="btn copy-btn" id="copyBtn" onclick="copyUPI()">
-            <span class="check">✓</span>
-            <span class="copy-text" id="copyText">Copy</span>
-          </button>
-        </div>
-      </div>
+<div class="form-group">
+  <label for="upiText">UPI ID</label>
+  <div class="upi-row">
+    <span id="upi">Loading...</span>
 
-      <div class="qr-box">
-        <div class="qr-title">Scan UPI QR Code</div>
-        <img id="qrImage" src="" alt="UPI QR Code" />
-      </div>
+    <button type="button" class="btn copy-btn" id="copyBtn" onclick="copyUPI()">
+      <span class="check">✓</span>
+      <span class="copy-text" id="copyText">Copy</span>
+    </button>
+  </div>
+</div>
+
+<div class="qr-box">
+  <div class="qr-title">Scan UPI QR Code</div>
+  <img id="qrImage" src="" alt="UPI QR Code">
+</div>
 
       <div class="payments">
         <div class="pay-icon" aria-label="Paytm logo">
