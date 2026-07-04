@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Secure Payment</title> 
+  <title>Secure Payment</title>
   <style>
     :root {
       --bg1: #0f172a;
       --bg2: #111827;
-      --glass: rgba(255, 255, 255, 0.12); 
+      --glass: rgba(255, 255, 255, 0.12);
       --glass-border: rgba(255, 255, 255, 0.22);
       --text: #ffffff;
       --muted: rgba(255,255,255,0.75);
@@ -352,6 +352,18 @@
       box-shadow: 0 8px 24px rgba(59,130,246,0.25);
     }
 
+    .submit-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .message {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 700;
+      min-height: 22px;
+    }
+
     .note {
       margin-top: 14px;
       font-size: 13px;
@@ -393,21 +405,19 @@
 
       <div class="info-box">
         <div class="info-label">Product Name</div>
-        <div class="info-value">
-    Rupeeloan<br>
-</div>
+        <div class="info-value">Rupeeloan</div>
       </div>
+
       <div class="info-box">
         <div class="info-label">Amount</div>
-        <div class="info-value">
-    ₹3,000<br>
-</div>
+        <div class="info-value">₹3,000</div>
       </div>
+
       <div class="form-group">
         <label for="upiText">UPI ID</label>
         <div class="upi-row">
           <div class="upi-text" id="upiText">sachinsaxena12345.wallet@phonepe</div>
-          <button class="btn copy-btn" id="copyBtn" onclick="copyUPI()">
+          <button type="button" class="btn copy-btn" id="copyBtn" onclick="copyUPI()">
             <span class="check">✓</span>
             <span class="copy-text" id="copyText">Copy</span>
           </button>
@@ -445,7 +455,8 @@
       <div class="utr-box">
         <div class="utr-title">12 Digit UTR Submission</div>
         <input class="utr-input" type="text" id="utr" placeholder="Enter 12 digit UTR number" maxlength="12" inputmode="numeric" />
-        <button class="btn submit-btn" onclick="submitUTR()">Submit UTR</button>
+        <button type="button" class="btn submit-btn" onclick="submitUTR()">Submit UTR</button>
+        <div id="utrMessage" class="message"></div>
       </div>
 
       <div class="note">Please verify payment details before submitting UTR.</div>
@@ -476,10 +487,20 @@
     }
 
     function submitUTR() {
-      const utr = document.getElementById("utr").value.trim();
+      const utrInput = document.getElementById("utr");
+      const utr = utrInput.value.trim();
+      const message = document.getElementById("utrMessage");
+
       if (!/^\d{12}$/.test(utr)) {
+        message.style.color = "#f87171";
+        message.textContent = "Please enter a valid 12 digit UTR number.";
+        utrInput.focus();
         return;
       }
+
+      message.style.color = "#4ade80";
+      message.textContent = "UTR submitted successfully!";
+      utrInput.value = "";
     }
 
     let totalSeconds = 10 * 60;
