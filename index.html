@@ -1,309 +1,519 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Secure Payment</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Payment</title> 
+  <style>
+    :root {
+      --bg1: #0f172a;
+      --bg2: #111827;
+      --glass: rgba(255, 255, 255, 0.12); 
+      --glass-border: rgba(255, 255, 255, 0.22);
+      --text: #ffffff;
+      --muted: rgba(255,255,255,0.75);
+      --shadow: 0 10px 40px rgba(0,0,0,0.35);
+    }
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-body{
-background:linear-gradient(135deg,#0f172a,#1e293b,#111827);
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:20px;
-color:#fff;
-overflow:hidden;
-}
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: var(--text);
+      background: linear-gradient(120deg, var(--bg1), var(--bg2), #0b1120);
+      position: relative;
+    }
 
-body:before{
-content:"";
-position:fixed;
-width:500px;
-height:500px;
-background:#00c6ff;
-filter:blur(180px);
-opacity:.25;
-top:-120px;
-left:-120px;
-animation:move1 8s infinite alternate;
-}
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.35;
+      z-index: -2;
+      animation: float 10s ease-in-out infinite;
+    }
 
-body:after{
-content:"";
-position:fixed;
-width:450px;
-height:450px;
-background:#8b5cf6;
-filter:blur(180px);
-opacity:.25;
-bottom:-120px;
-right:-120px;
-animation:move2 8s infinite alternate;
-}
+    body::before {
+      top: -80px;
+      left: -80px;
+      background: radial-gradient(circle, #00e5ff, transparent 65%);
+    }
 
-@keyframes move1{
-100%{transform:translate(80px,50px);}
-}
+    body::after {
+      bottom: -80px;
+      right: -80px;
+      background: radial-gradient(circle, #8b5cf6, transparent 65%);
+      animation-delay: 2s;
+    }
 
-@keyframes move2{
-100%{transform:translate(-80px,-50px);}
-}
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) translateX(0px) scale(1); }
+      50% { transform: translateY(25px) translateX(15px) scale(1.08); }
+    }
 
-.card{
-width:100%;
-max-width:430px;
-background:rgba(255,255,255,.08);
-backdrop-filter:blur(18px);
-border:1px solid rgba(255,255,255,.15);
-border-radius:20px;
-padding:22px;
-box-shadow:0 20px 45px rgba(0,0,0,.4);
-}
+    .particles {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
 
-h1{
-text-align:center;
-font-size:28px;
-margin-bottom:18px;
-}
+    .particle {
+      position: absolute;
+      width: 9px;
+      height: 8px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 50%;
+      animation: rise linear infinite;
+    }
 
-.timer{
-background:rgba(255,255,255,.08);
-padding:15px;
-border-radius:14px;
-text-align:center;
-margin-bottom:18px;
-}
+    @keyframes rise {
+      from { transform: translateY(110vh) scale(0.6); opacity: 0; }
+      10% { opacity: 1; }
+      to { transform: translateY(-20vh) scale(1.2); opacity: 0; }
+    }
 
-.timer span{
-font-size:30px;
-font-weight:bold;
-color:#38bdf8;
-}
+    .container {
+      max-width: 720px;
+      margin: 24px auto;
+      padding: 16px;
+    }
 
-.box{
-background:rgba(255,255,255,.08);
-padding:15px;
-border-radius:14px;
-margin-bottom:15px;
-}
+    .glass-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+    }
 
-.label{
-font-size:14px;
-opacity:.8;
-margin-bottom:5px;
-}
+    .glass-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.16), transparent 40%, rgba(255,255,255,0.08));
+      pointer-events: none;
+    }
 
-.value{
-font-size:18px;
-font-weight:bold;
-}
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
 
-.upi{
-display:flex;
-gap:10px;
-margin-top:8px;
-}
+    .logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #00e5ff, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(0,229,255,0.25);
+      font-size: 28px;
+      flex-shrink: 0;
+    }
 
-#upi{
-flex:1;
-padding:12px;
-border:none;
-border-radius:10px;
-background:#ffffff15;
-color:#fff;
-}
+    .title {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1.1;
+    }
 
-button{
-border:none;
-cursor:pointer;
-padding:12px 18px;
-border-radius:10px;
-font-weight:bold;
-background:#2563eb;
-color:#fff;
-transition:.3s;
-}
+    .subtitle {
+      color: var(--muted);
+      margin-top: 4px;
+      font-size: 14px;
+    }
 
-button:hover{
-opacity:.9;
-}
+    .timer-box {
+      margin: 18px 0 24px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,0.12);
+      gap: 10px;
+    }
 
-.qr{
-text-align:center;
-margin-top:20px;
-}
+    .timer-label {
+      font-weight: 700;
+      color: #dbeafe;
+      font-size: 18px;
+    }
 
-.qr img{
-width:220px;
-background:#fff;
-padding:10px;
-border-radius:12px;
-}
+    .timer {
+      font-size: 26px;
+      font-weight: 900;
+      color: #7dd3fc;
+      letter-spacing: 1px;
+      flex-shrink: 0;
+    }
 
-input{
-width:100%;
-padding:13px;
-margin-top:10px;
-border:none;
-outline:none;
-border-radius:10px;
-background:#ffffff15;
-color:#fff;
-}
+    .info-box {
+      margin-bottom: 18px;
+      padding: 16px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
 
-.submit{
-margin-top:15px;
-width:100%;
-background:#06b6d4;
-}
-</style>
+    .info-label {
+      font-size: 17px;
+      font-weight: 700;
+      color: #e5e7eb;
+      margin-bottom: 6px;
+    }
+
+    .info-value {
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+      word-break: break-word;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: #e5e7eb;
+      font-size: 18px;
+    }
+
+    .upi-row {
+      display: flex;
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .upi-text {
+      flex: 1;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      font-size: 16px;
+      word-break: break-all;
+      display: flex;
+      align-items: center;
+      min-height: 52px;
+    }
+
+    .btn {
+      border: none;
+      outline: none;
+      border-radius: 14px;
+      padding: 14px 18px;
+      cursor: pointer;
+      font-weight: 800;
+      transition: 0.25s ease;
+    }
+
+    .copy-btn {
+      background: linear-gradient(135deg, #2563eb, #06b6d4);
+      color: white;
+      min-width: 132px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 10px 24px rgba(37,99,235,0.25);
+      font-size: 16px;
+    }
+
+    .copy-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .copy-btn.copied {
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+    }
+
+    .check {
+      display: none;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .copy-btn.copied .check {
+      display: inline-block;
+    }
+
+    .qr-box {
+      margin-top: 20px;
+      text-align: center;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .qr-title {
+      margin-bottom: 14px;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .qr-box img {
+      width: 240px;
+      max-width: 100%;
+      border-radius: 16px;
+      background: white;
+      padding: 10px;
+    }
+
+    .payments {
+      margin-top: 18px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .pay-icon {
+      width: 84px;
+      height: 38px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      overflow: hidden;
+    }
+
+    .pay-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .utr-box {
+      margin-top: 24px;
+      padding-top: 10px;
+    }
+
+    .utr-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .utr-input {
+      width: 100%;
+      height: 54px;
+      padding: 0 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.18);
+      outline: none;
+      background: rgba(255,255,255,0.08);
+      color: white;
+      font-size: 16px;
+    }
+
+    .utr-input::placeholder {
+      color: rgba(255,255,255,0.45);
+    }
+
+    .submit-btn {
+      width: 100%;
+      margin-top: 14px;
+      height: 56px;
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
+      color: white;
+      font-size: 18px;
+      box-shadow: 0 8px 24px rgba(59,130,246,0.25);
+    }
+
+    .note {
+      margin-top: 14px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+    }
+
+    @media (max-width: 640px) {
+      .container { margin: 10px auto; padding: 8px; }
+      .glass-card { padding: 18px; border-radius: 18px; }
+      .title { font-size: 22px; }
+      .timer { font-size: 22px; }
+      .timer-label { font-size: 16px; }
+      .upi-row { flex-direction: column; }
+      .copy-btn { width: 100%; }
+      label, .utr-title { font-size: 17px; }
+      .qr-box img { width: 220px; }
+      .pay-icon { width: 78px; height: 36px; }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="particles" id="particles"></div>
 
-<div class="card">
+  <div class="container">
+    <div class="glass-card">
+      <div class="header">
+        <div class="logo">🔒</div>
+        <div>
+          <div class="title">Secure Payment</div>
+          <div class="subtitle">Advanced encrypted payment interface</div>
+        </div>
+      </div>
 
-<h1>🔒 Secure Payment</h1>
+      <div class="timer-box">
+        <div class="timer-label">Link expires in</div>
+        <div class="timer" id="timer">10:00</div>
+      </div>
 
-<div class="timer">
-Link Expires In<br>
-<span id="timer">10:00</span>
+      <div class="info-box">
+        <div class="info-label">Product Name</div>
+        <div class="info-value">
+    Rupeeloan<br>
 </div>
-
-<div class="box">
-<div class="label">Product Name</div>
-<div class="value">RupeeLoan</div>
+      </div>
+      <div class="info-box">
+        <div class="info-label">Amount</div>
+        <div class="info-value">
+    ₹3,000<br>
 </div>
+      </div>
+      <div class="form-group">
+        <label for="upiText">UPI ID</label>
+        <div class="upi-row">
+          <div class="upi-text" id="upiText">sachinsaxena12345.wallet@phonepe</div>
+          <button class="btn copy-btn" id="copyBtn" onclick="copyUPI()">
+            <span class="check">✓</span>
+            <span class="copy-text" id="copyText">Copy</span>
+          </button>
+        </div>
+      </div>
 
-<div class="box">
-<div class="label">Amount</div>
-<div class="value">₹3000</div>
-</div>
+      <div class="qr-box">
+        <div class="qr-title">Scan UPI QR Code</div>
+        <img id="qrImage" src="" alt="UPI QR Code" />
+      </div>
 
-<div class="box">
+      <div class="payments">
+        <div class="pay-icon" aria-label="Paytm logo">
+          <svg viewBox="0 0 120 50" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="118" height="48" rx="12" fill="rgba(255,255,255,0.04)" />
+            <text x="60" y="32" text-anchor="middle" font-size="22" font-family="Arial, sans-serif" font-weight="700" fill="#1e90ff">Paytm</text>
+          </svg>
+        </div>
 
-<div class="label">UPI ID</div>
+        <div class="pay-icon" aria-label="Gpay logo">
+          <svg viewBox="0 0 120 50" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="118" height="48" rx="12" fill="rgba(255,255,255,0.04)" />
+            <text x="60" y="32" text-anchor="middle" font-size="22" font-family="Arial, sans-serif" font-weight="700" fill="#ff3b30">Gpay</text>
+          </svg>
+        </div>
 
-<div class="upi">
+        <div class="pay-icon" aria-label="PhonePe logo">
+          <svg viewBox="0 0 120 50" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="118" height="48" rx="12" fill="rgba(255,255,255,0.04)" />
+            <text x="60" y="32" text-anchor="middle" font-size="18" font-family="Arial, sans-serif" font-weight="700" fill="#5f4bff">PhonePe</text>
+          </svg>
+        </div>
+      </div>
 
-<input id="upi" value="example@upi" readonly>
+      <div class="utr-box">
+        <div class="utr-title">12 Digit UTR Submission</div>
+        <input class="utr-input" type="text" id="utr" placeholder="Enter 12 digit UTR number" maxlength="12" inputmode="numeric" />
+        <button class="btn submit-btn" onclick="submitUTR()">Submit UTR</button>
+      </div>
 
-<button onclick="copyUPI()">Copy</button>
+      <div class="note">Please verify payment details before submitting UTR.</div>
+    </div>
+  </div>
 
-</div>
+  <script>
+    function copyUPI() {
+      const upi = document.getElementById("upiText").textContent.trim();
+      const btn = document.getElementById("copyBtn");
+      const copyText = document.getElementById("copyText");
 
-</div>
+      navigator.clipboard.writeText(upi).then(() => {
+        btn.classList.add("copied");
+        copyText.textContent = "Copied";
+        setTimeout(() => {
+          btn.classList.remove("copied");
+          copyText.textContent = "Copy";
+        }, 1800);
+      }).catch(() => {
+        btn.classList.add("copied");
+        copyText.textContent = "Copied";
+        setTimeout(() => {
+          btn.classList.remove("copied");
+          copyText.textContent = "Copy";
+        }, 1800);
+      });
+    }
 
-<div class="qr">
+    function submitUTR() {
+      const utr = document.getElementById("utr").value.trim();
+      if (!/^\d{12}$/.test(utr)) {
+        return;
+      }
+    }
 
-<h3>Scan QR</h3>
+    let totalSeconds = 10 * 60;
+    const timerEl = document.getElementById("timer");
 
-<img id="qr">
+    function updateTimer() {
+      const min = Math.floor(totalSeconds / 60);
+      const sec = totalSeconds % 60;
+      timerEl.textContent = String(min).padStart(2, "0") + ":" + String(sec).padStart(2, "0");
+      if (totalSeconds > 0) {
+        totalSeconds--;
+      } else {
+        timerEl.textContent = "00:00";
+      }
+    }
 
-</div>
+    setInterval(updateTimer, 1000);
+    updateTimer();
 
-<input id="utr" maxlength="12" placeholder="Enter 12 Digit UTR">
+    const upiId = document.getElementById("upiText").textContent.trim();
+    document.getElementById("qrImage").src =
+      "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" +
+      encodeURIComponent("upi://pay?pa=" + upiId + "&pn=Nexhy&cu=INR");
 
-<button class="submit" onclick="submitUTR()">
-Submit UTR
-</button>
-</div>
-
-<script>
-const upi=document.getElementById("upi").value;
-
-document.getElementById("qr").src=
-"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data="+
-encodeURIComponent("upi://pay?pa="+upi+"&pn=Payment&cu=INR");
-
-function copyUPI(){
-navigator.clipboard.writeText(upi);
-const btn=event.target;
-btn.innerHTML="Copied ✓";
-setTimeout(()=>{
-btn.innerHTML="Copy";
-},1500);
-}
-
-function submitUTR(){
-
-const utr=document.getElementById("utr").value.trim();
-
-if(!/^\d{12}$/.test(utr)){
-alert("Please Enter Valid 12 Digit UTR");
-return;
-}
-
-alert("UTR Submitted Successfully");
-
-}
-
-let total=600;
-
-function startTimer(){
-
-let m=Math.floor(total/60);
-
-let s=total%60;
-
-document.getElementById("timer").innerHTML=
-String(m).padStart(2,"0")+":"+
-String(s).padStart(2,"0");
-
-if(total>0){
-total--;
-}else{
-document.getElementById("timer").innerHTML="Expired";
-clearInterval(timer);
-}
-
-}
-
-startTimer();
-
-const timer=setInterval(startTimer,1000);
-/* Floating Background Particles */
-for(let i=0;i<25;i++){
-  const p=document.createElement("div");
-  p.style.position="fixed";
-  p.style.width="6px";
-  p.style.height="6px";
-  p.style.borderRadius="50%";
-  p.style.background="rgba(255,255,255,.18)";
-  p.style.left=Math.random()*100+"vw";
-  p.style.top=Math.random()*100+"vh";
-  p.style.pointerEvents="none";
-  p.style.animation=`float ${6+Math.random()*8}s linear infinite`;
-  document.body.appendChild(p);
-}
-
-const style=document.createElement("style");
-style.innerHTML=`
-@keyframes float{
-0%{
-transform:translateY(0) scale(.8);
-opacity:0;
-}
-10%{
-opacity:1;
-}
-100%{
-transform:translateY(-110vh) scale(1.4);
-opacity:0;
-}
-}
-`;
-document.head.appendChild(style);
-</script>
-
+    const particles = document.getElementById("particles");
+    for (let i = 0; i < 28; i++) {
+      const p = document.createElement("div");
+      p.className = "particle";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.animationDelay = (Math.random() * 18) + "s";
+      p.style.animationDuration = (12 + Math.random() * 12) + "s";
+      p.style.opacity = Math.random() * 0.35;
+      particles.appendChild(p);
+    }
+  </script>
 </body>
 </html>
