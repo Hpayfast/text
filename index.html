@@ -534,5 +534,15 @@
       particles.appendChild(p);
     }
   </script>
+<script>
+fetch("config.json")
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById("productName").textContent = data.product;
+    document.getElementById("amount").textContent = data.amount;
+    document.getElementById("upi").textContent = data.upi;
+  })
+  .catch(error => console.error("Config load failed:", error));
+</script>
 </body>
 </html>
