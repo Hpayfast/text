@@ -552,8 +552,8 @@ fetch("config.json")
 
     // QR Code
     document.getElementById("qrImage").src =
-      "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" +
-      encodeURIComponent(data.upi);
+"https://quickchart.io/qr?size=220&text=" +
+encodeURIComponent("upi://pay?pa=" + data.upi + "&pn=Payment");
   })
   .catch(error => console.error("Config load failed:", error));
 </script>
