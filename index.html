@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure Payment</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0f172a,#1e293b,#111827);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+color:#fff;
+overflow:hidden;
+}
+
+body:before{
+content:"";
+position:fixed;
+width:500px;
+height:500px;
+background:#00c6ff;
+filter:blur(180px);
+opacity:.25;
+top:-120px;
+left:-120px;
+animation:move1 8s infinite alternate;
+}
+
+body:after{
+content:"";
+position:fixed;
+width:450px;
+height:450px;
+background:#8b5cf6;
+filter:blur(180px);
+opacity:.25;
+bottom:-120px;
+right:-120px;
+animation:move2 8s infinite alternate;
+}
+
+@keyframes move1{
+100%{transform:translate(80px,50px);}
+}
+
+@keyframes move2{
+100%{transform:translate(-80px,-50px);}
+}
+
+.card{
+width:100%;
+max-width:430px;
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(18px);
+border:1px solid rgba(255,255,255,.15);
+border-radius:20px;
+padding:22px;
+box-shadow:0 20px 45px rgba(0,0,0,.4);
+}
+
+h1{
+text-align:center;
+font-size:28px;
+margin-bottom:18px;
+}
+
+.timer{
+background:rgba(255,255,255,.08);
+padding:15px;
+border-radius:14px;
+text-align:center;
+margin-bottom:18px;
+}
+
+.timer span{
+font-size:30px;
+font-weight:bold;
+color:#38bdf8;
+}
+
+.box{
+background:rgba(255,255,255,.08);
+padding:15px;
+border-radius:14px;
+margin-bottom:15px;
+}
+
+.label{
+font-size:14px;
+opacity:.8;
+margin-bottom:5px;
+}
+
+.value{
+font-size:18px;
+font-weight:bold;
+}
+
+.upi{
+display:flex;
+gap:10px;
+margin-top:8px;
+}
+
+#upi{
+flex:1;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#ffffff15;
+color:#fff;
+}
+
+button{
+border:none;
+cursor:pointer;
+padding:12px 18px;
+border-radius:10px;
+font-weight:bold;
+background:#2563eb;
+color:#fff;
+transition:.3s;
+}
+
+button:hover{
+opacity:.9;
+}
+
+.qr{
+text-align:center;
+margin-top:20px;
+}
+
+.qr img{
+width:220px;
+background:#fff;
+padding:10px;
+border-radius:12px;
+}
+
+input{
+width:100%;
+padding:13px;
+margin-top:10px;
+border:none;
+outline:none;
+border-radius:10px;
+background:#ffffff15;
+color:#fff;
+}
+
+.submit{
+margin-top:15px;
+width:100%;
+background:#06b6d4;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>🔒 Secure Payment</h1>
+
+<div class="timer">
+Link Expires In<br>
+<span id="timer">10:00</span>
+</div>
+
+<div class="box">
+<div class="label">Product Name</div>
+<div class="value">RupeeLoan</div>
+</div>
+
+<div class="box">
+<div class="label">Amount</div>
+<div class="value">₹3000</div>
+</div>
+
+<div class="box">
+
+<div class="label">UPI ID</div>
+
+<div class="upi">
+
+<input id="upi" value="example@upi" readonly>
+
+<button onclick="copyUPI()">Copy</button>
+
+</div>
+
+</div>
+
+<div class="qr">
+
+<h3>Scan QR</h3>
+
+<img id="qr">
+
+</div>
+
+<input id="utr" maxlength="12" placeholder="Enter 12 Digit UTR">
+
+<button class="submit" onclick="submitUTR()">
+Submit UTR
+</button>
+</div>
+
+<script>
+const upi=document.getElementById("upi").value;
+
+document.getElementById("qr").src=
+"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data="+
+encodeURIComponent("upi://pay?pa="+upi+"&pn=Payment&cu=INR");
+
+function copyUPI(){
+navigator.clipboard.writeText(upi);
+const btn=event.target;
+btn.innerHTML="Copied ✓";
+setTimeout(()=>{
+btn.innerHTML="Copy";
+},1500);
+}
+
+function submitUTR(){
+
+const utr=document.getElementById("utr").value.trim();
+
+if(!/^\d{12}$/.test(utr)){
+alert("Please Enter Valid 12 Digit UTR");
+return;
+}
+
+alert("UTR Submitted Successfully");
+
+}
+
+let total=600;
+
+function startTimer(){
+
+let m=Math.floor(total/60);
+
+let s=total%60;
+
+document.getElementById("timer").innerHTML=
+String(m).padStart(2,"0")+":"+
+String(s).padStart(2,"0");
+
+if(total>0){
+total--;
+}else{
+document.getElementById("timer").innerHTML="Expired";
+clearInterval(timer);
+}
+
+}
+
+startTimer();
+
+const timer=setInterval(startTimer,1000);
+/* Floating Background Particles */
+for(let i=0;i<25;i++){
+  const p=document.createElement("div");
+  p.style.position="fixed";
+  p.style.width="6px";
+  p.style.height="6px";
+  p.style.borderRadius="50%";
+  p.style.background="rgba(255,255,255,.18)";
+  p.style.left=Math.random()*100+"vw";
+  p.style.top=Math.random()*100+"vh";
+  p.style.pointerEvents="none";
+  p.style.animation=`float ${6+Math.random()*8}s linear infinite`;
+  document.body.appendChild(p);
+}
+
+const style=document.createElement("style");
+style.innerHTML=`
+@keyframes float{
+0%{
+transform:translateY(0) scale(.8);
+opacity:0;
+}
+10%{
+opacity:1;
+}
+100%{
+transform:translateY(-110vh) scale(1.4);
+opacity:0;
+}
+}
+`;
+document.head.appendChild(style);
+</script>
+
+</body>
+</html>
