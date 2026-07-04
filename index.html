@@ -527,11 +527,6 @@
     setInterval(updateTimer, 1000);
     updateTimer();
 
-    const upiId = document.getElementById("upiText").textContent.trim();
-    document.getElementById("qrImage").src =
-      "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" +
-      encodeURIComponent("upi://pay?pa=" + upiId + "&pn=Nexhy&cu=INR");
-
     const particles = document.getElementById("particles");
     for (let i = 0; i < 28; i++) {
       const p = document.createElement("div");
