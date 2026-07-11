@@ -126,7 +126,7 @@ color:#666;
 
 <div class="box">
 <b>UPI ID</b><br>
-abc@demoupiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+abc@demoupi
 </div>
 
 <img id="qr" alt="QR Code">
@@ -139,7 +139,7 @@ abc@demoupiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
         style="width:100%;padding:12px;border:1px solid #ccc;border-radius:8px;font-size:16px;">
 </div>
 
-<button onclick="submitPayment()">Submitttttttt</button>
+<button onclick="submitPayment()">Submit UTR</button>
 
 <div id="message">
 ✅ Contact to Agent
@@ -179,17 +179,16 @@ document.getElementById("timer").innerHTML="EXPIRED";
 updateTimer();
 setInterval(updateTimer,1000);
 
-function submitPayment(){
+function submitPayment() {
 
     const utr = document.getElementById("utr").value.trim();
 
-    if(utr===""){
-        alert("Please enter your UTR Number.");
+    if (!/^\d{12}$/.test(utr)) {
+        alert("Invalid UTR Number! Please enter a valid 12-digit UTR.");
         return;
     }
 
-    document.getElementById("message").style.display="block";
-
+    document.getElementById("message").style.display = "block";
 }
 
 </script>
