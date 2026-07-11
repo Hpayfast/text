@@ -125,8 +125,19 @@ color:#666;
 </div>
 
 <div class="box">
-<b>UPI ID</b><br>
-sharma@paytm
+    <b>UPI ID</b><br>
+
+    <span id="upiText">sharma@paytm</span>
+
+    <br><br>
+
+    <button
+        id="copyBtn"
+        type="button"
+        onclick="copyUPI()"
+        style="width:auto;padding:8px 18px;font-size:15px;margin-top:0;">
+        📋 Copy UPI
+    </button>
 </div>
 
 <img id="qr" alt="QR Code">
