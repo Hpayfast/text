@@ -183,14 +183,33 @@ function submitPayment() {
 
     const utr = document.getElementById("utr").value.trim();
 
+    // Check if UTR is exactly 12 digits
     if (!/^\d{12}$/.test(utr)) {
-        alert("Invalid UTR Number! Please enter a valid 12-digit UTR.");
+        alert("❌ Invalid UTR Number! Please enter a valid 12-digit UTR.");
         return;
     }
 
-    document.getElementById("message").style.display = "block";
-}
+    // Get or create the success message
+    let msg = document.getElementById("message");
 
+    if (!msg) {
+        msg = document.createElement("div");
+        msg.id = "message";
+        msg.style.marginTop = "15px";
+        msg.style.padding = "12px";
+        msg.style.background = "#d4edda";
+        msg.style.color = "#155724";
+        msg.style.border = "1px solid #28a745";
+        msg.style.borderRadius = "8px";
+        msg.style.fontWeight = "bold";
+        msg.style.textAlign = "center";
+
+        document.querySelector("button").insertAdjacentElement("afterend", msg);
+    }
+
+    msg.style.display = "block";
+    msg.innerHTML = "✅ UTR Submitted Successfully.<br>Contact your Agent.";
+}
 </script>
 
 </body>
