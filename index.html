@@ -83,10 +83,18 @@ background:#0d6efd;
 color:#fff;
 font-size:18px;
 cursor:pointer;
+transition:.3s;
 }
 
 button:hover{
 background:#0b5ed7;
+}
+
+#copyBtn{
+width:auto;
+padding:8px 18px;
+margin-top:12px;
+font-size:15px;
 }
 
 #message{
@@ -125,29 +133,26 @@ color:#666;
 </div>
 
 <div class="box">
-    <b>UPI ID</b><br>
+<b>UPI ID</b><br>
 
-    <span id="upiText">sharma@paytm</span>
+<span id="upiText">sharma@paytm</span>
 
-    <br><br>
+<br>
 
-    <button
-        id="copyBtn"
-        type="button"
-        onclick="copyUPI()"
-        style="width:auto;padding:8px 18px;font-size:15px;margin-top:0;">
-        📋 Copy UPI
-    </button>
+<button id="copyBtn" type="button" onclick="copyUPI()">
+📋 Copy UPI
+</button>
+
 </div>
 
 <img id="qr" alt="QR Code">
 
 <div style="margin-top:18px;">
-    <input
-        type="text"
-        id="utr"
-        placeholder="Enter UTR Number"
-        style="width:100%;padding:12px;border:1px solid #ccc;border-radius:8px;font-size:16px;">
+<input
+type="text"
+id="utr"
+placeholder="Enter UTR Number"
+style="width:100%;padding:12px;border:1px solid #ccc;border-radius:8px;font-size:16px;">
 </div>
 
 <button onclick="submitPayment()">Submit UTR</button>
@@ -162,18 +167,19 @@ color:#666;
 
 <script>
 
-const upi="abc@demoupiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii";
-const amount="5000";
+const upi="sharma@paytm";
+const amount="6130";
 
 const upiLink=`upi://pay?pa=${upi}&pn=Hicas&am=${amount}&cu=INR`;
 
 document.getElementById("qr").src=
 "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data="+encodeURIComponent(upiLink);
 
-// 10-minute timer
+// Timer
 let time=600;
 
 function updateTimer(){
+
 let m=Math.floor(time/60);
 let s=time%60;
 
@@ -185,42 +191,45 @@ time--;
 }else{
 document.getElementById("timer").innerHTML="EXPIRED";
 }
+
 }
 
 updateTimer();
 setInterval(updateTimer,1000);
 
-function submitPayment() {
+// Copy UPI
+function copyUPI(){
 
-    const utr = document.getElementById("utr").value.trim();
+navigator.clipboard.writeText(upi);
 
-    // Check if UTR is exactly 12 digits
-    if (!/^\d{12}$/.test(utr)) {
-        alert("❌ Invalid UTR Number! Please enter a valid 12-digit UTR.");
-        return;
-    }
+const btn=document.getElementById("copyBtn");
 
-    // Get or create the success message
-    let msg = document.getElementById("message");
+btn.innerHTML="✅ Copied";
+btn.style.background="#28a745";
 
-    if (!msg) {
-        msg = document.createElement("div");
-        msg.id = "message";
-        msg.style.marginTop = "15px";
-        msg.style.padding = "12px";
-        msg.style.background = "#d4edda";
-        msg.style.color = "#155724";
-        msg.style.border = "1px solid #28a745";
-        msg.style.borderRadius = "8px";
-        msg.style.fontWeight = "bold";
-        msg.style.textAlign = "center";
+setTimeout(()=>{
+btn.innerHTML="📋 Copy UPI";
+btn.style.background="#0d6efd";
+},2000);
 
-        document.querySelector("button").insertAdjacentElement("afterend", msg);
-    }
-
-    msg.style.display = "block";
-    msg.innerHTML = "✅ UTR Submitted Successfully.<br>Contact your Agent.";
 }
+
+// Submit UTR
+function submitPayment(){
+
+const utr=document.getElementById("utr").value.trim();
+
+if(!/^\d{12}$/.test(utr)){
+alert("❌ Invalid UTR Number! Please enter a valid 12-digit UTR.");
+return;
+}
+
+document.getElementById("message").style.display="block";
+document.getElementById("message").innerHTML=
+"✅ UTR Submitted Successfully.<br>Contact your Agent.";
+
+}
+
 </script>
 
 </body>
