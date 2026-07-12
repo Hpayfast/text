@@ -31,20 +31,11 @@ padding:20px;
 text-align:center;
 }
 
-.header{
-background:#00A651;
-color:white;
-padding:15px;
-border-radius:15px;
-font-size:28px;
-font-weight:bold;
-}
-
 .timer{
 font-size:30px;
 font-weight:bold;
 color:#ff6a00;
-margin:20px 0;
+margin:10px 0 20px;
 }
 
 .name{
@@ -92,11 +83,13 @@ background:#28a745;
 transform:scale(1.1);
 }
 
-.whatsapp{
-margin-top:15px;
+.whatsapp-btn{
+display:block;
+margin-top:20px;
 background:#25D366;
 color:white;
-padding:12px;
+text-decoration:none;
+padding:13px;
 border-radius:10px;
 font-size:18px;
 font-weight:bold;
@@ -115,16 +108,12 @@ color:#777;
 
 <div class="card">
 
-<div class="header">
-Ready to Pay
-</div>
-
 <div class="timer" id="timer">
 10:00
 </div>
 
 <div class="name">
-Raja Umar
+Usama please pay
 </div>
 
 <div class="amount">
@@ -158,9 +147,12 @@ Copy
 </div>
 
 
-<div class="whatsapp">
-WhatsApp: 03118992626
-</div>
+<a class="whatsapp-btn" 
+href="https://wa.me/923118992626?text=Hello%20Raja%20Umar%20I%20have%20completed%20the%20payment" 
+target="_blank">
+WhatsApp Confirmation
+</a>
+
 
 <div class="note">
 Payment Page
