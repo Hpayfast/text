@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scan to Pay (Demo)</title>
+<title>Ready to Pay</title>
 
 <style>
 *{
@@ -33,7 +33,7 @@ text-align:center;
 
 .header{
 background:#00A651;
-color:#fff;
+color:white;
 padding:15px;
 border-radius:15px;
 font-size:28px;
@@ -60,34 +60,42 @@ color:red;
 margin-bottom:20px;
 }
 
-.info{
+.box{
 background:#f7f7f7;
-padding:12px;
-border-radius:10px;
-text-align:left;
-line-height:2;
-font-size:15px;
+padding:15px;
+border-radius:12px;
+margin-bottom:15px;
+font-size:16px;
+}
+
+.number{
+font-weight:bold;
+font-size:18px;
+margin:10px 0;
+word-break:break-all;
 }
 
 .copy-btn{
 background:#00A651;
 color:white;
 border:none;
-padding:5px 10px;
-border-radius:6px;
+padding:9px 25px;
+border-radius:8px;
+font-size:15px;
+font-weight:bold;
 cursor:pointer;
-font-size:12px;
-margin-left:5px;
+transition:.3s;
 }
 
-.copy-btn:active{
-transform:scale(.95);
+.copy-btn.done{
+background:#28a745;
+transform:scale(1.1);
 }
 
 .whatsapp{
 margin-top:15px;
 background:#25D366;
-color:#fff;
+color:white;
 padding:12px;
 border-radius:10px;
 font-size:18px;
@@ -99,6 +107,7 @@ margin-top:12px;
 font-size:12px;
 color:#777;
 }
+
 </style>
 </head>
 
@@ -107,7 +116,7 @@ color:#777;
 <div class="card">
 
 <div class="header">
-Scan to Pay
+Ready to Pay
 </div>
 
 <div class="timer" id="timer">
@@ -122,23 +131,30 @@ Raja Umar
 Rs. 2,000
 </div>
 
-<div class="info">
 
-<b>Bank:</b> EASYPAISA<br>
+<div class="box">
+<b>Account Number</b>
 
-<b>Account:</b> 
-<span id="account">03118992626</span>
-<button class="copy-btn" onclick="copyText('account')">
+<div class="number" id="account">
+03118992626
+</div>
+
+<button class="copy-btn" onclick="copyText('account',this)">
 Copy
 </button>
-<br>
+</div>
 
-<b>IBAN:</b>
-<span id="iban">PK47TMFB0000000057837487</span>
-<button class="copy-btn" onclick="copyText('iban')">
+
+<div class="box">
+<b>IBAN</b>
+
+<div class="number" id="iban">
+PK47TMFB0000000057837487
+</div>
+
+<button class="copy-btn" onclick="copyText('iban',this)">
 Copy
 </button>
-
 </div>
 
 
@@ -147,7 +163,7 @@ WhatsApp: 03118992626
 </div>
 
 <div class="note">
-Demo Payment Page
+Payment Page
 </div>
 
 </div>
@@ -158,24 +174,36 @@ Demo Payment Page
 let t=600;
 
 setInterval(function(){
+
 if(t>0)t--;
 
 let m=Math.floor(t/60);
 let s=t%60;
 
-document.getElementById("timer").innerHTML=
+document.getElementById("timer").innerHTML =
 String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
 
 },1000);
 
 
-function copyText(id){
+
+function copyText(id,btn){
 
 let text=document.getElementById(id).innerText;
 
 navigator.clipboard.writeText(text);
 
-alert("Copied: "+text);
+btn.innerHTML="✓ Copied";
+
+btn.classList.add("done");
+
+
+setTimeout(function(){
+
+btn.innerHTML="Copy";
+btn.classList.remove("done");
+
+},1500);
 
 }
 
