@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hicas Payment</title>
+<title>Raja Nain - Scan to Pay</title>
 
 <style>
 *{
@@ -31,191 +31,120 @@ box-shadow:0 8px 25px rgba(0,0,0,.15);
 text-align:center;
 }
 
-
 h2{
-margin-top:15px;
+font-size:30px;
 color:#222;
+margin-bottom:8px;
 }
 
-.timer{
-font-size:32px;
-font-weight:bold;
-color:red;
-margin:18px 0;
+.subtitle{
+color:#666;
+margin-bottom:20px;
+font-size:15px;
 }
 
 .box{
-background:#f2f2f2;
-padding:12px;
+background:#f3f3f3;
+padding:14px;
 border-radius:10px;
-margin-top:10px;
+margin-top:12px;
 font-size:18px;
 word-break:break-word;
 }
 
+.amount{
+font-size:28px;
+font-weight:bold;
+color:#16a34a;
+margin-top:5px;
+}
+.subtitle{
+font-size:15px;
+color:#666;
+margin-bottom:20px;
+}
+
 img{
-margin-top:20px;
 width:220px;
 height:220px;
-border-radius:8px;
+margin:20px auto;
+display:block;
+border-radius:10px;
+border:1px solid #ddd;
 }
 
 button{
-margin-top:20px;
 width:100%;
-padding:14px;
-border:none;
-border-radius:10px;
-background:#0d6efd;
+padding:12px;
+margin-top:15px;
+background:#16a34a;
 color:#fff;
-font-size:18px;
+border:none;
+border-radius:8px;
+font-size:17px;
 cursor:pointer;
-transition:.3s;
 }
 
 button:hover{
-background:#0b5ed7;
+opacity:.9;
 }
 
-#copyBtn{
-width:auto;
-padding:8px 18px;
-margin-top:12px;
-font-size:15px;
-}
-
-#message{
-display:none;
+.note{
 margin-top:18px;
-padding:12px;
-background:#d4edda;
-color:#155724;
-border:1px solid #28a745;
-border-radius:8px;
-font-size:18px;
-font-weight:bold;
-}
-
-small{
-display:block;
-margin-top:15px;
+font-size:14px;
 color:#666;
 }
-</style>
 
+</style>
 </head>
+
 <body>
 
 <div class="card">
 
-<h2>JaiCredit</h2>
+<h2>Raja Nain</h2>
 
-<div class="timer" id="timer">10:00</div>
-
-<div class="box">
-<b>Amount</b><br>
-₹15,063
+<div class="subtitle">
+Scan the QR code below to make a payment.
 </div>
 
 <div class="box">
-<b>UPI ID</b><br>
-
-<span id="upiText">pkt-8796127332-1@okbizaxis</span>
-
-<br>
-
-<button id="copyBtn" type="button" onclick="copyUPI()">
-📋 Copy UPI
-</button>
-
+<b>Amount Due</b>
+<div class="amount">₹15,600</div>
 </div>
 
-<img id="qr" alt="QR Code">
-
-<div style="margin-top:18px;">
-<input
-type="text"
-id="utr"
-placeholder="Enter UTR Number"
-style="width:100%;padding:12px;border:1px solid #ccc;border-radius:8px;font-size:16px;">
+<div class="box">
+<b>EasyPaisa Number</b><br>
+<span id="number">03118992626</span>
 </div>
 
-<button onclick="submitPayment()">Submit UTR</button>
+<button onclick="copyNumber()">📋 Copy Number</button>
 
-<div id="message">
-✅ Contact to Agent
+<img src="qr.png" alt="EasyPaisa QR">
+<div class="note">
+Please verify the recipient details before sending your payment.
 </div>
-
-<small>Please complete payment before the timer expires.</small>
 
 </div>
 
 <script>
+function copyNumber() {
+  const number = document.getElementById("number").innerText;
 
-const upi="pkt-8796127332-1@okbizaxis";
-const amount="15,063";
-
-const upiLink=`upi://pay?pa=${upi}&pn=Hicas&am=${amount}&cu=INR`;
-
-document.getElementById("qr").src=
-"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data="+encodeURIComponent(upiLink);
-
-// Timer
-let time=600;
-
-function updateTimer(){
-
-let m=Math.floor(time/60);
-let s=time%60;
-
-document.getElementById("timer").innerHTML=
-String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
-
-if(time>0){
-time--;
-}else{
-document.getElementById("timer").innerHTML="EXPIRED";
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(number).then(() => {
+      alert("EasyPaisa number copied successfully.");
+    });
+  } else {
+    const input = document.createElement("input");
+    input.value = number;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand("copy");
+    document.body.removeChild(input);
+    alert("EasyPaisa number copied successfully.");
+  }
 }
-
-}
-
-updateTimer();
-setInterval(updateTimer,1000);
-
-// Copy UPI
-function copyUPI(){
-
-navigator.clipboard.writeText(upi);
-
-const btn=document.getElementById("copyBtn");
-
-btn.innerHTML="✅ Copied";
-btn.style.background="#28a745";
-
-setTimeout(()=>{
-btn.innerHTML="📋 Copy UPI";
-btn.style.background="#0d6efd";
-},2000);
-
-}
-
-// Submit UTR
-function submitPayment(){
-
-const utr=document.getElementById("utr").value.trim();
-
-if(!/^\d{12}$/.test(utr)){
-alert("❌ Invalid UTR Number! Please enter a valid 12-digit UTR.");
-return;
-}
-
-document.getElementById("message").style.display="block";
-document.getElementById("message").innerHTML=
-"✅ UTR Submitted Successfully.<br>Contact your Agent.";
-
-}
-
 </script>
-
 </body>
 </html>
