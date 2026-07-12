@@ -65,21 +65,23 @@ background:#f7f7f7;
 padding:12px;
 border-radius:10px;
 text-align:left;
-line-height:1.8;
+line-height:2;
 font-size:15px;
 }
 
-.qr{
-margin:20px auto;
-width:230px;
-height:230px;
-border:2px dashed #bbb;
-border-radius:12px;
-display:flex;
-justify-content:center;
-align-items:center;
-font-weight:bold;
-color:#666;
+.copy-btn{
+background:#00A651;
+color:white;
+border:none;
+padding:5px 10px;
+border-radius:6px;
+cursor:pointer;
+font-size:12px;
+margin-left:5px;
+}
+
+.copy-btn:active{
+transform:scale(.95);
 }
 
 .whatsapp{
@@ -99,6 +101,7 @@ color:#777;
 }
 </style>
 </head>
+
 <body>
 
 <div class="card">
@@ -120,14 +123,24 @@ Rs. 2,000
 </div>
 
 <div class="info">
-<b>Bank:</b> EASYPAISA (Demo)<br>
-<b>Account:</b> 03XXXXXXXXX<br>
-<b>IBAN:</b> PK00XXXXXXXXXXXXXXX
+
+<b>Bank:</b> EASYPAISA<br>
+
+<b>Account:</b> 
+<span id="account">03118992626</span>
+<button class="copy-btn" onclick="copyText('account')">
+Copy
+</button>
+<br>
+
+<b>IBAN:</b>
+<span id="iban">PK47TMFB0000000057837487</span>
+<button class="copy-btn" onclick="copyText('iban')">
+Copy
+</button>
+
 </div>
 
-<div class="qr">
-DEMO QR
-</div>
 
 <div class="whatsapp">
 WhatsApp: 03118992626
@@ -139,15 +152,33 @@ Demo Payment Page
 
 </div>
 
+
 <script>
+
 let t=600;
+
 setInterval(function(){
 if(t>0)t--;
+
 let m=Math.floor(t/60);
 let s=t%60;
+
 document.getElementById("timer").innerHTML=
 String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+
 },1000);
+
+
+function copyText(id){
+
+let text=document.getElementById(id).innerText;
+
+navigator.clipboard.writeText(text);
+
+alert("Copied: "+text);
+
+}
+
 </script>
 
 </body>
